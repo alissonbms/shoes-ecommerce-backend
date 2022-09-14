@@ -1,12 +1,15 @@
-import mongoose from "mongoose";
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 
-const connectToDatabase = async () => {
-  try {
-    await mongoose.connect(`${process.env.MONGO_URI}`);
-    console.log("Connected to MongoDB");
-  } catch (err) {
-    console.log(`Could not connect to MongoDB: ${err}`);
-  }
-};
+import mongoose from 'mongoose'
 
-export default connectToDatabase;
+const connectToDatabase = async (): Promise<void> => {
+  await mongoose.connect(`${process.env.MONGO_URI}`, (error) => {
+    if (error != null) {
+      return console.log(`Could not connect to MongoDB: ${error.message}`)
+    }
+
+    return console.log('Connected to MongoDB!')
+  })
+}
+
+export default connectToDatabase
