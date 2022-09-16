@@ -1,18 +1,18 @@
 import ControllerHelper from '../helpers/controller.helper'
 import { ProductServiceAbstract } from '../services/product.service'
 
-interface HttpRequest {
+export interface HttpRequest {
   body?: any
   params?: any // localhost:8080/12 = params = 12
   query?: any // localhost:8080?id="12" = query = 12
 }
 
-interface HttpResponse {
+export interface HttpResponse {
   statusCode: number
   body: any
 }
 
-interface ProductControllerAbstract {
+export interface ProductControllerAbstract {
   create: (httpRequest: HttpRequest) => Promise<HttpResponse>
   getOne: (httpRequest: HttpRequest) => Promise<HttpResponse>
   getAll: () => Promise<HttpResponse>
@@ -70,10 +70,7 @@ export class ProductController implements ProductControllerAbstract {
 
       const product = await this.productService.getOne(params.id)
 
-      return {
-        statusCode: 200,
-        body: product
-      }
+      return ControllerHelper.ok(product)
     } catch (error) {
       return ControllerHelper.serverError()
     }
@@ -83,10 +80,7 @@ export class ProductController implements ProductControllerAbstract {
     try {
       const products = await this.productService.getAll()
 
-      return {
-        statusCode: 200,
-        body: products
-      }
+      return ControllerHelper.ok(products)
     } catch (error) {
       return ControllerHelper.serverError()
     }
@@ -125,10 +119,7 @@ export class ProductController implements ProductControllerAbstract {
 
       const product = await this.productService.update(params.id, body)
 
-      return {
-        statusCode: 200,
-        body: product
-      }
+      return ControllerHelper.ok(product)
     } catch (error) {
       return ControllerHelper.serverError()
     }
@@ -148,10 +139,7 @@ export class ProductController implements ProductControllerAbstract {
 
       const product = await this.productService.delete(params.id)
 
-      return {
-        statusCode: 200,
-        body: product
-      }
+      return ControllerHelper.ok(product)
     } catch (error) {
       return ControllerHelper.serverError()
     }
