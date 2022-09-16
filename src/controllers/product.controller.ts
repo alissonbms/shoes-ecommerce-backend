@@ -47,10 +47,7 @@ export class ProductController implements ProductControllerAbstract {
       // const productController = new ProductController(new ProductService())
       // productController.create()
 
-      return {
-        statusCode: 201,
-        body: product
-      }
+      return ControllerHelper.created(product)
     } catch (error) {
       return ControllerHelper.serverError()
     }

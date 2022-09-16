@@ -10,6 +10,13 @@ const ControllerHelper = {
       statusCode: 200,
       body
     }
+  },
+
+  created(body: any): HttpResponse {
+    return {
+      statusCode: 201,
+      body
+    }
   }
 }
 
