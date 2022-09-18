@@ -21,5 +21,5 @@ export type ControllerMethods =
   | 'create'
   | 'getOne'
   | 'getAll'
-  | 'getAll'
+  | 'update'
   | 'delete'
