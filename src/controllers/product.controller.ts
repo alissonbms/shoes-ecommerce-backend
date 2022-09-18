@@ -1,3 +1,8 @@
+import {
+  MissingFieldError,
+  MissingParamError,
+  UpdateNotAllowedError
+} from '../errors/controllers.errors'
 import ControllerHelper from '../helpers/controller.helper'
 import { ProductServiceAbstract } from '../services/product.service'
 
@@ -36,10 +41,7 @@ export class ProductController implements ProductControllerAbstract {
 
       for (const field of requiredFields) {
         if (body[field] === false) {
-          return {
-            statusCode: 400,
-            body: `Missing ${field}.`
-          }
+          return ControllerHelper.badRequest(new MissingFieldError(field))
         }
       }
 
@@ -59,10 +61,7 @@ export class ProductController implements ProductControllerAbstract {
       const params = httpRequest.params
 
       if (params.id === false) {
-        return {
-          statusCode: 400,
-          body: 'Missing id param'
-        }
+        return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
       const product = await this.productService.getOne(params.id)
@@ -89,10 +88,7 @@ export class ProductController implements ProductControllerAbstract {
       const params = httpRequest.params
 
       if (params.id === false) {
-        return {
-          statusCode: 400,
-          body: 'Missing id param'
-        }
+        return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
       // verficar se os campos fornecidos para atualização são permitidos
@@ -108,10 +104,7 @@ export class ProductController implements ProductControllerAbstract {
       )
 
       if (receiveUpdateNotAllowed) {
-        return {
-          statusCode: 400,
-          body: 'Some received field is not allowed to update.'
-        }
+        return ControllerHelper.badRequest(new UpdateNotAllowedError())
       }
 
       const product = await this.productService.update(params.id, body)
@@ -128,10 +121,7 @@ export class ProductController implements ProductControllerAbstract {
       const params = httpRequest.params
 
       if (params.id === false) {
-        return {
-          statusCode: 400,
-          body: 'Missing id param'
-        }
+        return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
       const product = await this.productService.delete(params.id)

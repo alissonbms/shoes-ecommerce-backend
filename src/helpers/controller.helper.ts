@@ -17,6 +17,10 @@ const ControllerHelper = {
       statusCode: 201,
       body
     }
+  },
+
+  badRequest(error: Error): HttpResponse {
+    return { statusCode: 400, body: error }
   }
 }
 
