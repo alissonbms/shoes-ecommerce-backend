@@ -1,4 +1,4 @@
-import { HttpResponse } from '../controllers/product.controller'
+import { HttpResponse } from '../controllers/base.controller'
 
 const ControllerHelper = {
   serverError(): HttpResponse {
