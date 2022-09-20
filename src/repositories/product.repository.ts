@@ -29,7 +29,7 @@ export class MongoProductRepository implements ProductRepositoryAbstract {
   }
 
   async getAll(): Promise<Product[] | unknown> {
-    const products: Product[] | null = await ProductModel.findById({})
+    const products: Product[] | null = await ProductModel.find({})
 
     return products?.map((product: any) =>
       MongooseHelper.map<Product>(product.toJSON())
