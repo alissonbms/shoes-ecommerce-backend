@@ -23,7 +23,7 @@ export class ProductController implements BaseControllerAbstract {
       // verificar os campos obrigatórios
       const body = httpRequest.body
 
-      const requiredFields = ['name', 'imageUrl', 'collection']
+      const requiredFields = ['name', 'imageUrl', 'category']
 
       for (const field of requiredFields) {
         if (body[field] === false) {
@@ -83,7 +83,7 @@ export class ProductController implements BaseControllerAbstract {
       // id / name = keys
       // Object.keys(body) = id, name
 
-      const allowedUpdates = ['name', 'imageUrl', 'collection']
+      const allowedUpdates = ['name', 'imageUrl', 'category']
 
       const receiveUpdateNotAllowed = Object.keys(body).some(
         (update) => !allowedUpdates.includes(update)
