@@ -50,6 +50,6 @@ export class MongoProductRepository implements ProductRepositoryAbstract {
   async delete(id: string): Promise<Product> {
     const product = await ProductModel.findByIdAndDelete(id)
 
-    return MongooseHelper.map<Product>(product)
+    return MongooseHelper.map<Product>(product?.toJSON())
   }
 }
