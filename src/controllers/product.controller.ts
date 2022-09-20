@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
   MissingFieldError,
   MissingParamError,
@@ -26,7 +27,7 @@ export class ProductController implements BaseControllerAbstract {
       const requiredFields = ['name', 'price', 'imageUrl', 'category']
 
       for (const field of requiredFields) {
-        if (body[field] === false) {
+        if (!body[field]) {
           return ControllerHelper.badRequest(new MissingFieldError(field))
         }
       }
@@ -46,7 +47,7 @@ export class ProductController implements BaseControllerAbstract {
       // verificar se um ID foi fornecido no params
       const params = httpRequest.params
 
-      if (params.id === false) {
+      if (!params.id) {
         return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
@@ -73,7 +74,7 @@ export class ProductController implements BaseControllerAbstract {
       // verificar se um ID foi fornecido no params
       const params = httpRequest.params
 
-      if (params.id === false) {
+      if (!params.id) {
         return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
@@ -106,7 +107,7 @@ export class ProductController implements BaseControllerAbstract {
       // verificar se um ID foi fornecido no params
       const params = httpRequest.params
 
-      if (params.id === false) {
+      if (!params.id) {
         return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
