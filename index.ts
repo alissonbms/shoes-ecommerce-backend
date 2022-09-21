@@ -5,6 +5,7 @@ import cors from 'cors'
 import connectToDatabase from './src/database/mongoose.database'
 
 import productRouter from './src/routes/product.routes'
+import categoryRouter from './src/routes/category.routes'
 
 dotenv.config()
 
@@ -15,6 +16,7 @@ app.use(express.json())
 void connectToDatabase()
 
 app.use('/api/product', productRouter)
+app.use('/api/category', categoryRouter)
 
 const port = 8000
 // process.env.PORT = será a porta do heroku quando fizermos o deploy
