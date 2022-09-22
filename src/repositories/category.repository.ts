@@ -23,9 +23,18 @@ export class MongoCategoryRepository implements CategoryRepositoryAbstract {
   }
 
   async getOne(id: string): Promise<Category | null> {
-    const category = await CategoryModel.findById(id)
+    const categoryById = await CategoryModel.findById(id).populate({
+      path: 'products',
+      perDocumentLimit: 4
+    })
+    const category = MongooseHelper.map<Category>(categoryById?.toJSON())
 
-    return MongooseHelper.map<Category>(category?.toJSON())
+    return {
+      ...category,
+      products: category.products.map((product: any) =>
+        MongooseHelper.map<Product>(product)
+      )
+    }
   }
 
   async getAll(): Promise<Category | unknown> {
