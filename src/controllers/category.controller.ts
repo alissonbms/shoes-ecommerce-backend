@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { Types } from 'mongoose'
 import {
+  InvalidIdError,
   MissingFieldError,
   MissingParamError,
+  SomethingWrong,
   UpdateNotAllowedError
 } from '../errors/controllers.errors'
 import ControllerHelper from '../helpers/controller.helper'
@@ -33,7 +36,9 @@ export class CategoryController implements BaseControllerAbstract {
 
       return ControllerHelper.created(category)
     } catch (error) {
-      return ControllerHelper.serverError()
+      return ControllerHelper.serverError(
+        new SomethingWrong('Invalid category create data')
+      )
     }
   }
 
@@ -45,11 +50,17 @@ export class CategoryController implements BaseControllerAbstract {
         return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
+      if (!Types.ObjectId.isValid(params.id)) {
+        return ControllerHelper.badRequest(new InvalidIdError('category'))
+      }
+
       const category = await this.categoryService.getOne(params.id)
 
       return ControllerHelper.ok(category)
     } catch (error) {
-      return ControllerHelper.serverError()
+      return ControllerHelper.serverError(
+        new SomethingWrong('Incorrect id param')
+      )
     }
   }
 
@@ -59,7 +70,9 @@ export class CategoryController implements BaseControllerAbstract {
 
       return ControllerHelper.ok(categories)
     } catch (error) {
-      return ControllerHelper.serverError()
+      return ControllerHelper.serverError(
+        new SomethingWrong('No categories data')
+      )
     }
   }
 
@@ -69,6 +82,10 @@ export class CategoryController implements BaseControllerAbstract {
 
       if (!params.id) {
         return ControllerHelper.badRequest(new MissingParamError('id'))
+      }
+
+      if (!Types.ObjectId.isValid(params.id)) {
+        return ControllerHelper.badRequest(new InvalidIdError('category'))
       }
 
       const body = httpRequest.body
@@ -87,7 +104,9 @@ export class CategoryController implements BaseControllerAbstract {
 
       return ControllerHelper.ok(category)
     } catch (error) {
-      return ControllerHelper.serverError()
+      return ControllerHelper.serverError(
+        new SomethingWrong('Incorrect id param, invalid category update data')
+      )
     }
   }
 
@@ -99,11 +118,17 @@ export class CategoryController implements BaseControllerAbstract {
         return ControllerHelper.badRequest(new MissingParamError('id'))
       }
 
+      if (!Types.ObjectId.isValid(params.id)) {
+        return ControllerHelper.badRequest(new InvalidIdError('category'))
+      }
+
       const category = await this.categoryService.delete(params.id)
 
       return ControllerHelper.ok(category)
     } catch (error) {
-      return ControllerHelper.serverError()
+      return ControllerHelper.serverError(
+        new SomethingWrong('Incorrect id param')
+      )
     }
   }
 }
