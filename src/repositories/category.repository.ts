@@ -1,5 +1,6 @@
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/category.dtos'
 import Category from '../entities/category.entity'
+import Product from '../entities/product.entity'
 import MongooseHelper from '../helpers/mongoose.helper'
 import CategoryModel from '../models/category.model'
 
@@ -28,11 +29,18 @@ export class MongoCategoryRepository implements CategoryRepositoryAbstract {
   }
 
   async getAll(): Promise<Category | unknown> {
-    const categories = await CategoryModel.find({})
-
-    return categories.map((category) =>
-      MongooseHelper.map<Category>(category.toJSON())
+    const categories: Category[] = await CategoryModel.find({}).populate(
+      'products'
     )
+
+    return categories.map((category: any) => {
+      return {
+        ...MongooseHelper.map<Category>(category.toJSON()),
+        products: category.products.map((product: any) =>
+          MongooseHelper.map<Product>(product.toJSON())
+        )
+      }
+    })
   }
 
   async update(

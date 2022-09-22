@@ -22,7 +22,7 @@ export class CategoryController implements BaseControllerAbstract {
   async create(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const body = httpRequest.body
-      const requiredFields = ['name', 'imageUrl', 'products']
+      const requiredFields = ['name', 'imageUrl']
 
       for (const field of requiredFields) {
         if (!body[field]) {
@@ -73,7 +73,7 @@ export class CategoryController implements BaseControllerAbstract {
 
       const body = httpRequest.body
 
-      const allowedUpdates = ['name', 'imageUrl', 'products']
+      const allowedUpdates = ['name', 'imageUrl']
 
       const receiveUpdateNotAllowed = Object.keys(body).some(
         (update) => !allowedUpdates.includes(update)
