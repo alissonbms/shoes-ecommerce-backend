@@ -29,9 +29,10 @@ export class MongoCategoryRepository implements CategoryRepositoryAbstract {
   }
 
   async getAll(): Promise<Category | unknown> {
-    const categories: Category[] = await CategoryModel.find({}).populate(
-      'products'
-    )
+    const categories: Category[] = await CategoryModel.find({}).populate({
+      path: 'products',
+      perDocumentLimit: 4
+    })
 
     return categories.map((category: any) => {
       return {
