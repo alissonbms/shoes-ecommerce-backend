@@ -5,12 +5,12 @@ import { CategoryRepositoryAbstract } from '../repositories/category.repository'
 export interface CategoryServiceAbstract {
   create: (createCategoryDto: CreateCategoryDto) => Promise<Category>
   getOne: (id: string) => Promise<Category | null>
-  getAll: () => Promise<Category[] | unknown>
+  getAll: () => Promise<Category[]>
   update: (
     id: string,
     updateCategoryDto: UpdateCategoryDto
   ) => Promise<Category | null>
-  delete: (id: string) => Promise<Category>
+  delete: (id: string) => Promise<Category | null>
 }
 
 export class CategoryService implements CategoryServiceAbstract {
@@ -28,7 +28,7 @@ export class CategoryService implements CategoryServiceAbstract {
     return await this.categoryRepository.getOne(id)
   }
 
-  async getAll(): Promise<Category[] | unknown> {
+  async getAll(): Promise<Category[]> {
     return await this.categoryRepository.getAll()
   }
 
@@ -39,7 +39,7 @@ export class CategoryService implements CategoryServiceAbstract {
     return await this.categoryRepository.update(id, updateCategoryDto)
   }
 
-  async delete(id: string): Promise<Category> {
+  async delete(id: string): Promise<Category | null> {
     return await this.categoryRepository.delete(id)
   }
 }

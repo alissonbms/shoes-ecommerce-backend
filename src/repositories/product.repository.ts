@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { CreateProductDto, UpdateProductDto } from '../dtos/product.dtos'
 import Product from '../entities/product.entity'
 import MongooseHelper from '../helpers/mongoose.helper'
@@ -6,12 +7,12 @@ import ProductModel from '../models/product.model'
 export interface ProductRepositoryAbstract {
   create: (createProductDto: CreateProductDto) => Promise<Product>
   getOne: (id: string) => Promise<Product | null>
-  getAll: () => Promise<Product[] | unknown>
+  getAll: (category?: string) => Promise<Product[]>
   update: (
     id: string,
     updateProductDto: UpdateProductDto
   ) => Promise<Product | null>
-  delete: (id: string) => Promise<Product>
+  delete: (id: string) => Promise<Product | null>
 }
 
 export class MongoProductRepository implements ProductRepositoryAbstract {
@@ -28,8 +29,14 @@ export class MongoProductRepository implements ProductRepositoryAbstract {
     // "product?" pois o objeto product pode ser posivelmente "null"
   }
 
-  async getAll(): Promise<Product[] | unknown> {
-    const products: Product[] | null = await ProductModel.find({})
+  async getAll(category?: string): Promise<Product[]> {
+    let products: Product[] = []
+
+    if (category) {
+      products = await ProductModel.find({ category })
+    } else {
+      products = await ProductModel.find({})
+    }
 
     return products?.map((product: any) =>
       MongooseHelper.map<Product>(product.toJSON())
@@ -47,7 +54,7 @@ export class MongoProductRepository implements ProductRepositoryAbstract {
     return MongooseHelper.map<Product>(product?.toJSON())
   }
 
-  async delete(id: string): Promise<Product> {
+  async delete(id: string): Promise<Product | null> {
     const product = await ProductModel.findByIdAndDelete(id)
 
     return MongooseHelper.map<Product>(product?.toJSON())

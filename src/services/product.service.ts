@@ -5,12 +5,12 @@ import { ProductRepositoryAbstract } from '../repositories/product.repository'
 export interface ProductServiceAbstract {
   create: (createProductDto: CreateProductDto) => Promise<Product>
   getOne: (id: string) => Promise<Product | null>
-  getAll: () => Promise<Product[] | unknown>
+  getAll: (category?: string) => Promise<Product[]>
   update: (
     id: string,
     updateProductDto: UpdateProductDto
   ) => Promise<Product | null>
-  delete: (id: string) => Promise<Product>
+  delete: (id: string) => Promise<Product | null>
 }
 
 export class ProductService implements ProductServiceAbstract {
@@ -34,8 +34,8 @@ export class ProductService implements ProductServiceAbstract {
     return await this.productRepository.getOne(id)
   }
 
-  async getAll(): Promise<Product[] | unknown> {
-    return await this.productRepository.getAll()
+  async getAll(category?: string): Promise<Product[]> {
+    return await this.productRepository.getAll(category)
   }
 
   async update(
@@ -45,7 +45,7 @@ export class ProductService implements ProductServiceAbstract {
     return await this.productRepository.update(id, updateProductDto)
   }
 
-  async delete(id: string): Promise<Product> {
+  async delete(id: string): Promise<Product | null> {
     return await this.productRepository.delete(id)
   }
 }

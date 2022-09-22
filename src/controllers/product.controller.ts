@@ -78,9 +78,20 @@ export class ProductController implements BaseControllerAbstract {
     }
   }
 
-  async getAll(): Promise<HttpResponse> {
+  async getAll(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const products = await this.productService.getAll()
+      if (httpRequest.query.category) {
+        const isCategoryValid = await CategoryModel.findById(
+          httpRequest.query.category
+        )
+        if (!isCategoryValid) {
+          return ControllerHelper.badRequest(new InvalidIdError('category'))
+        }
+      }
+
+      const products = await this.productService.getAll(
+        httpRequest.query.category
+      )
 
       return ControllerHelper.ok(products)
     } catch (error) {

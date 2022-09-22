@@ -64,7 +64,7 @@ export class CategoryController implements BaseControllerAbstract {
     }
   }
 
-  async getAll(): Promise<HttpResponse> {
+  async getAll(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const categories = await this.categoryService.getAll()
 

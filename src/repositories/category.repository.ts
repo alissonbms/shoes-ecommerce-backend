@@ -7,12 +7,12 @@ import CategoryModel from '../models/category.model'
 export interface CategoryRepositoryAbstract {
   create: (createCategoryDto: CreateCategoryDto) => Promise<Category>
   getOne: (id: string) => Promise<Category | null>
-  getAll: () => Promise<Category[] | unknown>
+  getAll: () => Promise<Category[]>
   update: (
     id: string,
     updateCategoryDto: UpdateCategoryDto
   ) => Promise<Category | null>
-  delete: (id: string) => Promise<Category>
+  delete: (id: string) => Promise<Category | null>
 }
 
 export class MongoCategoryRepository implements CategoryRepositoryAbstract {
@@ -37,7 +37,7 @@ export class MongoCategoryRepository implements CategoryRepositoryAbstract {
     }
   }
 
-  async getAll(): Promise<Category | unknown> {
+  async getAll(): Promise<Category[]> {
     const categories: Category[] = await CategoryModel.find({}).populate({
       path: 'products',
       perDocumentLimit: 4
@@ -66,7 +66,7 @@ export class MongoCategoryRepository implements CategoryRepositoryAbstract {
     return MongooseHelper.map<Category>(category?.toJSON())
   }
 
-  async delete(id: string): Promise<Category> {
+  async delete(id: string): Promise<Category | null> {
     const category = await CategoryModel.findByIdAndDelete(id)
 
     return MongooseHelper.map<Category>(category?.toJSON())
