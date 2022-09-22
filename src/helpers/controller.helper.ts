@@ -1,8 +1,8 @@
 import { HttpResponse } from '../controllers/base.controller'
 
 const ControllerHelper = {
-  serverError(): HttpResponse {
-    return { statusCode: 500, body: 'Something went wrong. Try again later' }
+  serverError(error: Error): HttpResponse {
+    return { statusCode: 500, body: error }
   },
 
   ok(body: any): HttpResponse {
